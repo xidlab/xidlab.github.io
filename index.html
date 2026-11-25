@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XID Lab</title>
+<meta name="description" content="Experience Intelligence Design Lab (XID Lab), Hongik University">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header__inner">
+    <a class="logo" href="#top">XID</a>
+    <button class="menu-btn" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+    <nav class="nav">
+      <a href="#about">About</a>
+      <a href="#members">Members</a>
+      <a href="#project">Project</a>
+      <a href="#publication">Publication</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== ABOUT (고정 텍스트: 이 파일에서 직접 수정) ===== -->
+  <section id="about" class="section">
+    <div class="hero" style="background-image:url('images/hero.png')"></div>
+    <div class="wrap about">
+      <h1 class="about__title">XID Lab</h1>
+
+      <p>The <b>Experience Intelligence Design Lab</b> (XID Lab) investigates and proposes value-centered experiences through innovative design methodologies.</p>
+      <p>The name “XID” encapsulates the laboratory’s guiding philosophy and vision.</p>
+      <p>The letter “X” signifies not only “Experience” but also represents the unexplored futures, infinite possibilities, and multiple values yet to be discovered.</p>
+      <p>When paired with “Intelligence,” it demonstrates our dedication to implementing a thoughtful and purposeful design that combines deep understanding with forward thinking.</p>
+      <p>The phonetic similarity between “XID” and “seed” also reflects our hope that the lab’s research initiatives will germinate into meaningful societal transformations.</p>
+
+      <p class="gap">At XID Lab, we conduct in-depth research on people and their environmental contexts to achieve value-driven experience design.</p>
+      <p>Our work focuses on various touchpoints where people and systems interact, such as service environments, customer experience environments, and brand environments. Through this, we propose design principles, approaches, and strategies to positively impact users and society.</p>
+
+      <p class="gap"><b>Primary Research Domains at XID Lab:</b></p>
+      <ul class="domains">
+        <li><u>Brand Experience, Service Design, and UX Design</u><br>We investigate and develop the values and conditions that shape experiences that impact people’s lives.</li>
+        <li><u>Design Methodologies and Strategies</u><br>We advance methods such as user-centred design, participatory design, and co-creation that enable people to participate, build relationships, and discover meaningful experiences.</li>
+        <li><u>Value-Driven Service Experiences</u><br>We explore experiences that address the social implications of technological progress and societal transformation, striving to create a positive societal impact.</li>
+        <li><u>Designerly Approaches with AI and Emerging Technologies</u><br>We examine the evolving design roles and competencies that designers need in the future and how they can leverage AI and other technologies to enrich their design practice.</li>
+      </ul>
+
+      <p class="gap">XID Lab continuously explores the conditions and criteria for creating valuable experiences, proposing future directions for design through rigorous design research and practical implementation.</p>
+      <p class="tags">#Brand Experience, #Customer Experience, #Service Design, #Designerly Approaches, #Designerly Approaches with AI, #Design Pedagogy, #Design Pedagogy with AI, #Future Scenario</p>
+    </div>
+  </section>
+
+  <!-- ===== MEMBERS (data/members 시트) ===== -->
+  <section id="members" class="section">
+    <div class="bar"><div class="wrap">Ph.D.</div></div>
+    <div class="wrap" id="phd"></div>
+    <div class="bar"><div class="wrap">MASTER</div></div>
+    <div class="wrap" id="master"></div>
+  </section>
+
+  <!-- ===== PROJECT (data/projects 시트) ===== -->
+  <section id="project" class="section">
+    <div class="wrap" id="projects"></div>
+  </section>
+
+  <!-- ===== PUBLICATION (data/publications 시트) ===== -->
+  <section id="publication" class="section">
+    <div class="wrap" id="publications"></div>
+  </section>
+
+  <!-- ===== CONTACT (config.js 에서 수정) ===== -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2 class="contact__title">Let’s work together!</h2>
+      <div class="contact__grid" id="contact-info"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">© <span id="year"></span> XID Lab, Hongik University</div>
+</footer>
+
+<script src="config.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

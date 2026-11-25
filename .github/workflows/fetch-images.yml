@@ -1,0 +1,33 @@
+# 아임웹 서버에 있는 기존 이미지를 저장소(images/)로 한 번 복사해 오는 작업.
+# 저장소에 처음 올리면 자동 실행되고, Actions 탭에서 수동 실행도 가능합니다.
+# 이미 받아 둔 파일은 건너뛰므로 여러 번 실행해도 안전합니다.
+name: Fetch images from imweb
+
+on:
+  push:
+    paths: ["tools/images.csv"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download missing images
+        run: |
+          tail -n +2 tools/images.csv | while IFS=, read -r path url; do
+            path="${path//$'\r'/}"; url="${url//$'\r'/}"
+            [ -z "$path" ] && continue
+            if [ -s "$path" ]; then echo "skip  $path"; continue; fi
+            mkdir -p "$(dirname "$path")"
+            if curl -fsSL --retry 3 -o "$path" "$url"; then echo "got   $path"; else echo "FAIL  $path"; rm -f "$path"; fi
+          done
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add images
+          git diff --cached --quiet && echo "no new images" || (git commit -m "Add images copied from imweb" && git push)

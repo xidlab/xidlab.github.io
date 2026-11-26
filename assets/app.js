@@ -1,48 +1,23 @@
-/* XID Lab — 데이터(CSV 또는 구글 시트)를 읽어 화면을 그립니다. */
+/* XID Lab — data/xidlab_data.xlsx 를 읽어 화면을 그립니다. */
 (function () {
   const CFG = window.XID_CONFIG || {};
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* ---------- CSV ---------- */
-  function parseCSV(text) {
-    const rows = []; let row = [], cell = "", q = false;
-    text = text.replace(/^﻿/, "");
-    for (let i = 0; i < text.length; i++) {
-      const c = text[i];
-      if (q) {
-        if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
-        else if (c === '"') q = false;
-        else cell += c;
-      } else if (c === '"') q = true;
-      else if (c === ",") { row.push(cell); cell = ""; }
-      else if (c === "\n" || c === "\r") {
-        if (c === "\r" && text[i + 1] === "\n") i++;
-        row.push(cell); rows.push(row); row = []; cell = "";
-      } else cell += c;
-    }
-    if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
-    const head = (rows.shift() || []).map((h) => h.trim());
-    return rows
-      .filter((r) => r.some((v) => v.trim() !== ""))
-      .map((r) => Object.fromEntries(head.map((h, i) => [h, (r[i] || "").trim()])));
-  }
-
+  /* ---------- Excel (data/xidlab_data.xlsx) ---------- */
+  const DATA_FILE = "data/xidlab_data.xlsx";
+  let book = null;
   async function load(name) {
-    const url = CFG.SHEET_ID
-      ? `https://docs.google.com/spreadsheets/d/${CFG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}&_=${Date.now()}`
-      : `data/${name}.csv?_=${Date.now()}`;
-    try {
-      const res = await fetch(url, { cache: "no-store" });
-      if (!res.ok) throw new Error(res.status);
-      return parseCSV(await res.text());
-    } catch (e) {
-      if (CFG.SHEET_ID) { // 시트를 못 읽으면 저장소 CSV로 대체
-        const res = await fetch(`data/${name}.csv`);
-        return parseCSV(await res.text());
-      }
-      throw e;
+    if (!book) {
+      const res = await fetch(`${DATA_FILE}?_=${Date.now()}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`${DATA_FILE}: ${res.status}`);
+      book = XLSX.read(await res.arrayBuffer(), { type: "array" });
     }
+    const ws = book.Sheets[name];
+    if (!ws) throw new Error(`시트 "${name}" 없음`);
+    return XLSX.utils.sheet_to_json(ws, { defval: "", raw: false })
+      .map((r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [String(k).trim(), String(v).trim()])))
+      .filter((r) => Object.values(r).some((v) => v !== ""));
   }
 
   const groupBy = (list, key) => {
